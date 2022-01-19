@@ -3,6 +3,7 @@ package users;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import users.create.CreateUserRequestBody;
+import users.create.getAll.GetAllUserResponse;
 import users.create.response.CreateUserErrorResponse;
 import users.create.response.CreateUserResponse;
 
@@ -38,9 +39,16 @@ public class UsersClient {
         return response;
     }
 
-    public Response getAllUsers() {
-        return given()
+    public GetAllUserResponse getAllUsers() {
+        Response response = given()
                 .when()
-                    .get("https://gorest.co.in/public/v1/comments");
+                .get("https://gorest.co.in/public/v1/users");
+        response
+                .then()
+                    .log()
+                    .body();
+        GetAllUserResponse getAllUserResponse=response.as(GetAllUserResponse.class);
+        getAllUserResponse.setStatusCode(response.getStatusCode());
+        return getAllUserResponse;
     }
 }
