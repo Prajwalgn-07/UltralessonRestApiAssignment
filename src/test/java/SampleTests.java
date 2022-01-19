@@ -1,4 +1,6 @@
 import io.restassured.http.ContentType;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
@@ -13,6 +15,7 @@ public class SampleTests {
                     .get("https://gorest.co.in/public/v1/comments")
                 .then()
                     .statusCode(200)
+                    .body("data",Matchers.hasSize(20))
                     .log()
                     .body();
     }
@@ -26,7 +29,7 @@ public class SampleTests {
                     .body("{\n" +
                             "    \"name\": \"Tenali Ramakrishna\",\n" +
                             "    \"gender\": \"male\",\n" +
-                            "    \"email\": \"tenali.ramakrishna@15cxsnc.com\",\n" +
+                            "    \"email\": \"tenali.ramakrishna@15cxsnfde.com\",\n" +
                             "    \"status\": \"active\"\n" +
                             "}")
                 .when()
@@ -34,6 +37,7 @@ public class SampleTests {
                 .then()
                     .log()
                     .body()
-                    .statusCode(201);
+                    .statusCode(201)
+                    .body("data.name", Matchers.equalTo("Tenali Ramakrishna"));
     }
 }
