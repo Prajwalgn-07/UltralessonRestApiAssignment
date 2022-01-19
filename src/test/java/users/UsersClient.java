@@ -7,12 +7,18 @@ import static io.restassured.RestAssured.given;
 
 public class UsersClient {
     public Response CreateUser(String body) {
-        return given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .header("Authorization", "Bearer 92f1b99ec1ffa077f84eec8f302900934e0b28c53f72845a4e5084a4820cd35a")
-                .body(body)
+        return
+                given()
+                    .contentType(ContentType.JSON)
+                    .accept(ContentType.JSON)
+                    .header("Authorization", "Bearer 92f1b99ec1ffa077f84eec8f302900934e0b28c53f72845a4e5084a4820cd35a")
+                    .body(body)
                 .when()
-                .post("https://gorest.co.in/public/v1/users");
+                    .post("https://gorest.co.in/public/v1/users");
+    }
+    public Response getAllUsers() {
+        return given()
+                .when()
+                    .get("https://gorest.co.in/public/v1/comments");
     }
 }

@@ -1,47 +1,58 @@
 
 import org.hamcrest.Matchers;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
 
+import java.util.UUID;
+
 
 public class CreateUserTests {
+    private UsersClient usersClient;
+    @BeforeClass
+    public void beforeClass(){
+        usersClient=new UsersClient();
+    }
 
     @Test
     public void shouldCreateMaleUser(){
         //1. Arrange
-        String body = "{\n" +
+        String email=String.format("%s@gmail.com", UUID.randomUUID());
+        String body = String.format("{\n" +
                 "    \"name\": \"Tenali Ramakrishna\",\n" +
                 "    \"gender\": \"male\",\n" +
-                "    \"email\": \"tenali.ramakrisa@15cnfde.com\",\n" +
+                "    \"email\": \"%s\",\n" +
                 "    \"status\": \"active\"\n" +
-                "}";
+                "}",email);
         //2. Act
-        new UsersClient().CreateUser(body)
+        usersClient.CreateUser(body)
                 .then()
                     .log()
                     .body()
         //3. Assert
                     .statusCode(201)
-                    .body("data.name", Matchers.equalTo("Tenali Ramakrishna"));
+                    .body("data.email", Matchers.equalTo(email));
     }
 
 
     @Test
     public void shouldCreateFemaleUser(){
+
         //1. Arrange
-        String body = "{\n" +
+        String email=String.format("%s@gmail.com", UUID.randomUUID());
+        String body = String.format("{\n" +
                 "    \"name\": \"Lilli Singh\",\n" +
                 "    \"gender\": \"female\",\n" +
-                "    \"email\": \"Lilli.Singh@15cxfde.com\",\n" +
+                "    \"email\": \"%s\",\n" +
                 "    \"status\": \"active\"\n" +
-                "}";
+                "}",email);
         //2. Act
-        new UsersClient().CreateUser(body)
+        usersClient.CreateUser(body)
                 .then()
                     .log()
                     .body()
         //3. Assert
                     .statusCode(201)
-                    .body("data.name", Matchers.equalTo("Lilli Singh"));
+                    .body("data.email", Matchers.equalTo(email));
     }
 }
