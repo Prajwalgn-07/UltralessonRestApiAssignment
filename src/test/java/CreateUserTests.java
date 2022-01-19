@@ -1,11 +1,16 @@
 
 import org.hamcrest.Matchers;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
 import users.create.CreateUserRequestBody;
+import users.create.response.CreateUserResponse;
 
 import java.util.UUID;
+
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 
 public class CreateUserTests {
@@ -25,13 +30,10 @@ public class CreateUserTests {
                                                             .status("active").gender("male")
                                                             .build();
         //2. Act
-        usersClient.CreateUser(createUserRequestBody)
-                .then()
-                    .log()
-                    .body()
+        CreateUserResponse createUserResponse=usersClient.CreateUser(createUserRequestBody);
         //3. Assert
-                    .statusCode(201)
-                    .body("data.email", Matchers.equalTo(email));
+        assertEquals(createUserResponse.getStatusCode(),201);
+        assertEquals(createUserResponse.getData().getEmail(),email);
     }
 
 
@@ -46,12 +48,9 @@ public class CreateUserTests {
                                                             .status("active").gender("female")
                                                             .build();
         //2. Act
-        usersClient.CreateUser(createUserRequestBody)
-                .then()
-                    .log()
-                    .body()
+        CreateUserResponse createUserResponse=usersClient.CreateUser(createUserRequestBody);
         //3. Assert
-                    .statusCode(201)
-                    .body("data.email", Matchers.equalTo(email));
+        assertEquals(createUserResponse.getStatusCode(),201);
+        assertEquals(createUserResponse.getData().getEmail(),email);
     }
 }

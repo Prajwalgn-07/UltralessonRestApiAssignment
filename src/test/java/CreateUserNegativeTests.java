@@ -1,8 +1,12 @@
 import org.hamcrest.Matchers;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
 import users.create.CreateUserRequestBody;
+import users.create.response.CreateUserErrorResponse;
+
+import static org.testng.AssertJUnit.assertEquals;
 
 public class CreateUserNegativeTests {
     private UsersClient usersClient;
@@ -20,13 +24,24 @@ public class CreateUserNegativeTests {
                                                             .status("active").gender("male")
                                                             .build();
         //2.Act
-        usersClient.CreateUser(createUserRequestBody)
-                .then()
-                .log()
-                .body()
-        //3. Assert
-                .statusCode(422)
-                .body("data", Matchers.hasItem(Matchers.hasEntry("field","email")))
-                .body("data",Matchers.hasItem(Matchers.hasEntry("message","is invalid")));
+           CreateUserErrorResponse createUserErrorResponse= usersClient.createUserExpectingError(createUserRequestBody);
+        //3.Assert
+        assertEquals(createUserErrorResponse.getStatusCode(),422);
+        createUserErrorResponse.assertHasError("email","is invalid");
+    }
+    @Test
+    public void shouldAllowToCreateUserWithBlankGenderAndStatus(){
+        //1.Arrange
+        CreateUserRequestBody createUserRequestBody= CreateUserRequestBody
+                                                            .builder()
+                                                            .name("Tenali Ramakrishna").email("tenali.ramakrishna15@cc.com")
+                                                            .status("").gender("")
+                                                            .build();
+        //2.Act
+        CreateUserErrorResponse createUserErrorResponse= usersClient.createUserExpectingError(createUserRequestBody);
+        //3.Assert
+        assertEquals(createUserErrorResponse.getStatusCode(),422);
+        createUserErrorResponse.assertHasError("gender","can't be blank");
+        createUserErrorResponse.assertHasError("status","can't be blank");
     }
 }
