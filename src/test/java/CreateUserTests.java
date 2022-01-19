@@ -3,6 +3,7 @@ import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
+import users.create.CreateUserRequestBody;
 
 import java.util.UUID;
 
@@ -18,14 +19,12 @@ public class CreateUserTests {
     public void shouldCreateMaleUser(){
         //1. Arrange
         String email=String.format("%s@gmail.com", UUID.randomUUID());
-        String body = String.format("{\n" +
-                "    \"name\": \"Tenali Ramakrishna\",\n" +
-                "    \"gender\": \"male\",\n" +
-                "    \"email\": \"%s\",\n" +
-                "    \"status\": \"active\"\n" +
-                "}",email);
+        String name = "Tenali Ramakrishna";
+        String gender = "male";
+        String status = "active";
+        CreateUserRequestBody createUserRequestBody=new CreateUserRequestBody(name,gender,email,status);
         //2. Act
-        usersClient.CreateUser(body)
+        usersClient.CreateUser(createUserRequestBody)
                 .then()
                     .log()
                     .body()
@@ -40,14 +39,12 @@ public class CreateUserTests {
 
         //1. Arrange
         String email=String.format("%s@gmail.com", UUID.randomUUID());
-        String body = String.format("{\n" +
-                "    \"name\": \"Lilli Singh\",\n" +
-                "    \"gender\": \"female\",\n" +
-                "    \"email\": \"%s\",\n" +
-                "    \"status\": \"active\"\n" +
-                "}",email);
+        String name = "Lilli Singh";
+        String gender = "female";
+        String status = "active";
+        CreateUserRequestBody createUserRequestBody=new CreateUserRequestBody(name,gender,email,status);
         //2. Act
-        usersClient.CreateUser(body)
+        usersClient.CreateUser(createUserRequestBody)
                 .then()
                     .log()
                     .body()

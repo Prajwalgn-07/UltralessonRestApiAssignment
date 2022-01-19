@@ -2,6 +2,7 @@ import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
+import users.create.CreateUserRequestBody;
 
 public class CreateUserNegativeTests {
     private UsersClient usersClient;
@@ -13,14 +14,13 @@ public class CreateUserNegativeTests {
     @Test
     public void shouldAllowToCreateUserWithInvalidEmail(){
         //1.Arrange
-        String body="{\n" +
-                "    \"name\": \"Tenali Ramakrishna\",\n" +
-                "    \"gender\": \"male\",\n" +
-                "    \"email\": \"tenali.ramakrishna15c.com\",\n" +
-                "    \"status\": \"active\"\n" +
-                "}";
+        String name = "Tenali Ramakrishna";
+        String gender = "male";
+        String email = "tenali.ramakrishna15c.com";
+        String status = "active";
+        CreateUserRequestBody createUserRequestBody=new CreateUserRequestBody(name,gender,email,status);
         //2.Act
-        usersClient.CreateUser(body)
+        usersClient.CreateUser(createUserRequestBody)
                 .then()
                 .log()
                 .body()
